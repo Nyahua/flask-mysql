@@ -1,15 +1,14 @@
 from flask import Flask 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
+from pathlib import Path
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///movie.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + str(Path.cwd() / 'movie.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.app_context().push()
 
 db = SQLAlchemy(app)
-
-
 
 class Movie(db.Model):
     __tablename__ = 'movies'
