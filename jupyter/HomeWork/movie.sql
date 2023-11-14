@@ -1,12 +1,11 @@
 Create Table movie_info
 (
- movie_id varchar(10) Not Null,
+ movie_id INTEGER PRIMARY KEY AUTOINCREMENT,
  movie_name varchar(20) Not Null,
  release_date datetime,
  country varchar(20),
- type varchar(10),
- year int check( year>=1000 and  year<=2100),
- primary key(movie_id)
+ movie_type varchar(10),
+ release_year int check( release_year>=1000 and  release_year<=2100)
 );
 
 
@@ -67,9 +66,8 @@ values('1018','速度与激情9','2021/05/21','中国','动作','2021');
 
 Create Table movie_box
 (
- movie_id varchar(10) Not Null,
- box float,
- primary key(movie_id)
+ movie_id INTEGER NOT NULL,
+ movie_box float
 );
 
 insert into movie_box
@@ -131,11 +129,10 @@ values('1018',13.92);
 
 Create Table actor_info
 ( 
- actor_id varchar(10) Not Null,
+ actor_id INTEGER PRIMARY KEY AUTOINCREMENT,
  actor_name varchar(20) Not Null,
- gender varchar(2) Not Null,
- country varchar(20),
- primary key(actor_id)
+ gender varchar(2),
+ country varchar(20)
 );
 
 insert into actor_info
@@ -269,11 +266,10 @@ values('2041','米歇尔·罗德里格兹','女','美国');
 
 Create Table movie_actor_relation
 ( 
- id varchar(10) Not Null,
- movie_id varchar(10) Not Null,
- actor_id varchar(10) Not Null,
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ movie_id INT Not Null,
+ actor_id INT Not Null,
  relation_type varchar(20),
- primary key(id),
  foreign Key(movie_id) references movie_info(movie_id),
  foreign Key(actor_id) references actor_info( actor_id)
 );
