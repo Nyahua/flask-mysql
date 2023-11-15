@@ -1,0 +1,31 @@
+{% extends 'tpl_base.html' %}
+
+{% block content %}
+<p class="my-5">{{ movies|length }} Titles</p>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Year</th>
+            <th scope="col">Movie Title</th>
+            <th scope="col">operation</th>
+            <th scope="col">Information</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for movie in movies %}
+        <tr class="table">
+            <th scope="row">{{ movie.year }}</th>
+            <td>{{ movie.title }}</td>
+            <td>
+                <button type="button" class="btn btn-warning">Edit</button>
+                <button type="button" class="btn btn-danger">Delete</button>
+            </td>
+            <td>
+                <a class="imdb" href="https://www.imdb.com/find?q={{ movie.title }}" target="_blank"><button
+                        type="button" class="btn btn-info disabled">IMDB</button></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
