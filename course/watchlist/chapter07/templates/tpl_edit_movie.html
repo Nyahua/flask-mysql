@@ -1,12 +1,20 @@
 {% extends 'tpl_base.html' %}
 
 {% block content %}
-<div class="form-group">
+
     <h3>Edit item</h3>
     <form method="post">
-        <label for="">Name </label><input type="text" name="title" autocomplete="off" required value="{{ movie.title }}">
-        <label for="">Year</label> <input type="text" name="year" autocomplete="off" required value="{{ movie.year }}">
-        <input class="btn" type="submit" name="submit" value="Update">
+        <div class="form-group">
+            <label class="my-3 mr-3" for="">Name </label><input type="text" name="title" autocomplete="off" required
+                value="{{ movie.movie_name }}">
+        </div>
+        <div class="form-group">
+            <label class="my-3 mr-3" for="release-yaer">Year</label> <input id="release-year" type="text" name="year" autocomplete="off" required
+                value="{{ movie.release_year }}">
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary">Update</button>
+        </div>
     </form>
 </div>
 {% endblock %}

@@ -6,7 +6,9 @@ from sqlalchemy import text
 from sqlalchemy.sql import func
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://nyahua:123456@nyahua.com:3306/movie'
+
+PASSWORD = "abc#123456"
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://karibu:{PASSWORD}@rm-cn-lbj3dxzvu001t24o.rwlb.rds.aliyuncs.com:3306/movie'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.app_context().push()
 
@@ -62,7 +64,6 @@ for instance in Movie.query.all():
     movie['actors'] = [actor.actor_name for actor in instance.actors]
     movies += [movie]
 
-app = Flask(__name__)
 
 @app.route('/')
 @app.route('/index')
