@@ -4,11 +4,10 @@ from markupsafe import escape
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from sqlalchemy.sql import func
+import os
 
 app = Flask(__name__)
-
-PASSWORD = "abc#123456"
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://karibu:{PASSWORD}@rm-cn-lbj3dxzvu001t24o.rwlb.rds.aliyuncs.com:3306/movie'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.root_path, 'movie.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.app_context().push()
 

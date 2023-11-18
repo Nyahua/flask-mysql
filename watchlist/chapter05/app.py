@@ -4,12 +4,14 @@ from markupsafe import escape
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from sqlalchemy.sql import func
+import os
 
 app = Flask(__name__)
 
-PASSWORD = "abc#123456"
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://karibu:{PASSWORD}@rm-cn-lbj3dxzvu001t24o.rwlb.rds.aliyuncs.com:3306/movie'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.root_path, 'movie.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.app_context().push()
+
 app.app_context().push()
 
 db = SQLAlchemy(app)
@@ -57,7 +59,12 @@ class MovieBox(db.Model):
     movie_box = db.Column(db.Float)
     movies = db.relationship('Movie', back_populates='moviebox')
 
-movies = Movie.query.all()
+# move mysql database to local variables 
+movies = []
+for instance in Movie.query.all():
+    movie = dict(title=instance.movie_name, year=instance.release_year)
+    movie['actors'] = [actor.actor_name for actor in instance.actors]
+    movies += [movie]
 
 
 @app.route('/')
@@ -69,24 +76,3 @@ def index():
 @app.route('/user/<name>')
 def user_page(name):
     return dict(User=escape(name))
-
-@app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])
-def edit_movie(movie_id):
-    # movie = Movie.query.filter_by(movie_id=movie_id)
-    movie = Movie.query.get_or_404(movie_id)
-
-    # if request.method == 'POST':  # 处理编辑表单的提交请求
-    #     title = request.form['title']
-    #     year = request.form['year']
-
-    #     if not title or not year or len(year) != 4 or len(title) > 60:
-    #         flash('Invalid input.')
-    #         return redirect(url_for('edit', movie_id=movie_id))  # 重定向回对应的编辑页面
-
-    #     movie.title = title  # 更新标题
-    #     movie.year = year  # 更新年份
-    #     db.session.commit()  # 提交数据库会话
-    #     flash('Item updated.')
-    #     return redirect(url_for('index'))  # 重定向回主页
-
-    return render_template('tpl_edit_movie.html', movie=movie)  # 传入被编辑的电影记录
