@@ -2,19 +2,19 @@
 
 {% block content %}
 
-    <h3>Edit item</h3>
+    <h3 class="my-5">Edit item</h3>
+
     <form method="post">
-        <div class="form-group">
-            <label class="my-3 mr-3" for="">Name </label><input type="text" name="title" autocomplete="off" required
-                value="{{ movie.movie_name }}">
+        <div class="mb-3 form-group row">
+          <label for="movie-name" class="form-label">电影名称：</label>
+          <input type="text" class="form-control" id="movie-name" autocomplete="off" required value="{{ movie.movie_name }}">
         </div>
-        <div class="form-group">
-            <label class="my-3 mr-3" for="release-yaer">Year</label> <input id="release-year" type="text" name="year" autocomplete="off" required
-                value="{{ movie.release_year }}">
+        <div class="form-group row mb-3">
+          <label for="release-year" class="form-label">发行年份：</label>
+          <input type="number" class="form-control" id="release-year" autocomplete="off" required value="{{ movie.release_year }}">
         </div>
-        <div>
-            <button type="button" class="btn btn-primary">Update</button>
-        </div>
-    </form>
-</div>
+        <button type="submit" class="btn btn-primary">更新</button>
+      </form>
+
+
 {% endblock %}

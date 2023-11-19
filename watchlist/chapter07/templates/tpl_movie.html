@@ -22,15 +22,15 @@
         {% for movie in movies %}
         <tr class="table">
             <th scope="row">{{ movie.release_year }}</th>
-            <td>{{ movie.movie_name }}</td>
+            <td>{{ movie.movie_name }} <span class="ml-3"> <a href="detail"> <i class="bi bi-info-circle"></i></a></span></span></td>
             <td>
                 <a href="{{ url_for('edit_movie', movie_id=movie.movie_id) }}"><i class="bi bi-pencil"></i></a>
                 <a href="#"><i class="bi bi-trash"></i></a>
             </td>
             <td>
                 <a class="imdb"
-                    href="https://search.douban.com/movie/subject_search?search_text={{ movie.title }}+{{ movie.year }}&cat=1002” target="
-                    _blank">
+                    href="https://search.douban.com/movie/subject_search?search_text={{ movie.movie_name }}+{{ movie.release_year }}&cat=1002"
+                    target="_blank">
                     <img src="{{ url_for('static', filename='img/douban.png')}}" height='60px'></img></a>
             </td>
         </tr>

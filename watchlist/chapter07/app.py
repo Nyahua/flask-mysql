@@ -62,8 +62,9 @@ movies = Movie.query.all()
 @app.route('/')
 @app.route('/index')
 @app.route('/home')
+@app.route('/movie')
 def index():
-    return render_template('tpl_index.html', movies=movies)
+    return render_template('tpl_movie.html', movies=movies)
 
 @app.route('/user/<name>')
 def user_page(name):
