@@ -1,0 +1,74 @@
+ ssh -L 8888:localhost:8888 root@8.130.29.84
+上传文件
+scp D:\desktop\2014-made.csv root@8.130.29.84:/root/Data
+文件夹
+scp -r D:\desktop\data6 root@8.130.29.84:/root/Data
+8b02b00e99b29bb98302b234d84a48ef479ed107023a97f6
+
+
+安装anaconda
+wget https://mirrors.aliyun.com/anaconda/archive/Anaconda3-5.1.0-Linux-x86_64.sh
+wget https://mirrors.aliyun.com/anaconda/archive/Anaconda3-5.1.0-Linux-x86_64.sh
+sudo bash Anaconda3-5.1.0-Linux-x86_64.sh
+更改安装路径：/usr/local/anaconda3
+将Anaconda添加⾄环境变量，输⼊sudo vim /etc/profile 并在末尾添加
+export PATH=/usr/local/anaconda3:$PATH
+激活环境变量
+source /etc/profile
+source ~/.bashrc
+
+安装java
+
+sudo yum install -y bzip2
+sudo yum search java|grep jdk
+sudo yum install java-1.8.0-openjdk
+
+安装pyspark
+pip install pyspark
+pip install findspark
+
+
+wget https://mirrors.tuna.tsinghua.edu.cn/apache/spark/spark-3.5.0/spark-3.5.0-bin-hadoop3.tgz
+
+sudo mkdir -p /usr/local/spark
+sudo cp -r spark-3.5.0-bin-hadoop3.tgz /usr/local/spark
+
+cd /usr/local/spark
+sudo tar -zxvf spark-3.5.0-bin-hadoop3.tgz
+
+vim ~/.bash_profile
+
+export SPARK_HOME=/usr/local/spark/spark-3.5.0-bin-hadoop3
+export PATH=$PATH:$SPARK_HOME/bin
+source ~/.bash_profile
+
+cd /usr/local/spark/spark-3.5.0-bin-hadoop3/conf
+sudo cp log4j2.properties.template log4j2.properties
+sudo vim log4j2.properties
+log4j.logger.org.apache.spark.repl.MAIN=Info
+
+
+
+pip install pyspark
+pip install findspark
+
+vim ~/.condarc
+
+channels:
+ - defaults
+show_channel_urls: true
+default_channels:
+ - http://mirrors.aliyun.com/anaconda/pkgs/main
+ - http://mirrors.aliyun.com/anaconda/pkgs/r
+ - http://mirrors.aliyun.com/anaconda/pkgs/msys2
+custom_channels:
+ conda-forge: http://mirrors.aliyun.com/anaconda/cloud
+ msys2: http://mirrors.aliyun.com/anaconda/cloud
+ bioconda: http://mirrors.aliyun.com/anaconda/cloud
+ menpo: http://mirrors.aliyun.com/anaconda/cloud
+ pytorch: http://mirrors.aliyun.com/anaconda/cloud
+ simpleitk: http://mirrors.aliyun.com/anaconda/cloud
+
+
+
+conda clean -i
