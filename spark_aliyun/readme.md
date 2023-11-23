@@ -4,10 +4,12 @@
 ssh -o ServerAliveInterval=60 root@123.56.18.227
 ```
 ## install Java
+```bash
 sudo yum install -y bzip2
 sudo yum search java|grep jdk
 sudo yum install java-1.8.0-openjdk
 java -version
+```
 
 ## install spark
 ```bash
