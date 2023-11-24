@@ -18,13 +18,13 @@ sudo mkdir -p /usr/local/spark
 sudo cp -r spark-3.5.0-bin-hadoop3.tgz /usr/local/spark
 cd /usr/local/spark
 sudo tar -zxvf spark-3.5.0-bin-hadoop3.tgz
-vim ~/.bash_proﬁle
+vim ~/.bash_profile
 # 在末尾添加：
 `
 export SPARK_HOME=/usr/local/spark/spark-3.5.0-bin-hadoop3 
 export PATH=$PATH:$SPARK_HOME/bin 
 `
-source ~/.bash_proﬁle
+source ~/.bash_profile
 spark-shell
 # 输⼊ ``:quit`` 返回原⽬录
 cd /usr/local/spark/spark-3.5.0-bin-hadoop3/conf
