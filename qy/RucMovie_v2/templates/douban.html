@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>豆瓣电影</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://cdn.bootcdn.net/ajax/libs/bootswatch/5.3.1/flatly/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+</head>
+
+<body>
+    <section>
+        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">豆瓣电影</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+                    aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-flex" id="navbarColor01">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#douban_list">高分电影</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#movie_rank">电影排行版</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">演员排行版</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </section>
+    <div class="container-fluid bg-white">
+        <section id="douban_list">
+            <div class="container my-3">
+                <p class="text-center fs-3 my-3">豆瓣高分电影</p>
+                <table id="tblMovies" class="display"> </table>
+            </div>
+        </section>
+        <section id="movie_rank">
+            <div class="container-fluid bg-light-subtle py-3">
+                <div class="container">
+                    <p class="text-center fs-3 my-3">电影分区TOP 10</p>
+                    <div class="row">
+                        <div id="chart_rank_main" class="col-4 my-3" style="height:800px;"></div>
+                        <div id="chart_rank_hk" class="col-4 my-3" style="height:800px;"></div>
+                        <div id="chart_rank_overseas" class="col-4 my-3" style="height:800px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script>
+        // movie_list datatable
+        const dataSet = {{ vars.movie_list | tojson | safe }};
+        console.log(dataSet);
+
+        new DataTable('#tblMovies', {
+            columns: [
+                { title: 'movie_id', 'visible': false },
+                { title: '电影名称' },
+                { title: '发行<br>年份', "width": "10%" },
+                { title: '电影<br>类别', "width": "10%" },
+                { title: '发行地区' },
+                { title: '豆瓣评分' },
+                { title: '电影简介', "width": "50%" },
+            ],
+            data: dataSet,
+            order: [[5, 'desc']]
+        });
+        // echarts ranking
+        var eChart_rank_main = echarts.init(document.getElementById('chart_rank_main'));
+        var option = {{ vars.options.echart_mainland | tojson | safe  }}
+        eChart_rank_main.setOption(option);
+
+        var eChart_rank_main = echarts.init(document.getElementById('chart_rank_hk'));
+        var option = {{ vars.options.echart_hk | tojson | safe  }}
+        eChart_rank_main.setOption(option);
+
+        var eChart_rank_oversea = echarts.init(document.getElementById('chart_rank_overseas'));
+        var option = {{ vars.options.echart_oversea | tojson | safe  }}
+        eChart_rank_oversea.setOption(option);
+
+    </script>
+</body>
+
+</html>

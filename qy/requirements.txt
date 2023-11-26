@@ -1,0 +1,11 @@
+flask
+flask_sqlalchemy
+sqlalchemy
+python-dotenv
+flask_login
+werkzeug
+flask_login
+click
+markupsafe
+pandas
+numpy
