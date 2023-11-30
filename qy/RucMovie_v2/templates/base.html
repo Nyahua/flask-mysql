@@ -21,7 +21,7 @@
 		<ul>
 			<li><a href="{{ url_for('index') }}">Home</a></li>
 			<li><a href="{{ url_for('actor') }}">Actor</a></li>
-			<li><a href="{{ url_for('douban') }}">豆瓣</a></li>
+			<li><a href="{{ url_for('douban.movie_table') }}">豆瓣</a></li>
 		{% if current_user.is_authenticated %}
 			<li><a href="{{ url_for('settings') }}">Settings</a></li>
 			<li><a href="{{ url_for('logout') }}">Logout</a></li>

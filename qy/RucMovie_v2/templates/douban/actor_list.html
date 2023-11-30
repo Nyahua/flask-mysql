@@ -1,0 +1,28 @@
+{% extends 'douban/base.html' %}
+{% block content %}
+<section id="douban_list">
+            <p class="text-center fs-3 my-3">豆瓣高分电影</p>
+        <table id="tblActors" class="display"> </table>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+    // movie_list datatable
+    const dataSet = {{ vars.data | tojson | safe }};
+    console.log(dataSet);
+
+    new DataTable('#tblActors', {
+        columns: [
+            { title: '演员姓名'},
+            { title: '性别' },
+            { title: '出生日期' },
+            { title: '出生地' },
+            { title: '最高得分' },
+            { title: '入榜次数' },
+            { title: '入榜电影' },
+        ],
+        data: dataSet,
+        order: [[4, 'desc'], [5, 'desc']]
+    });
+</script>
+{% endblock %}

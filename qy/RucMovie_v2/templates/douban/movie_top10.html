@@ -1,0 +1,28 @@
+{% extends 'douban/base.html' %}
+{% block content %}
+<section id="movie_rank">
+
+    <div class="row">
+        <div id="chart_rank_main" class="col-4 my-3" style="height:800px;"></div>
+        <div id="chart_rank_hk" class="col-4 my-3" style="height:800px;"></div>
+        <div id="chart_rank_overseas" class="col-4 my-3" style="height:800px;"></div>
+    </div>
+
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+    // echarts ranking
+    var eChart_rank_main = echarts.init(document.getElementById('chart_rank_main'));
+    var option = {{ vars.echart_mainland | tojson | safe  }}
+    eChart_rank_main.setOption(option);
+
+    var eChart_rank_main = echarts.init(document.getElementById('chart_rank_hk'));
+    var option = {{ vars.echart_hk | tojson | safe  }}
+    eChart_rank_main.setOption(option);
+
+    var eChart_rank_oversea = echarts.init(document.getElementById('chart_rank_overseas'));
+    var option = {{ vars.echart_oversea | tojson | safe  }}
+    eChart_rank_oversea.setOption(option);
+</script>
+{% endblock %}

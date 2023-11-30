@@ -16,16 +16,19 @@ from flask_login import login_user
 from flask_login import login_required, logout_user
 from flask_login import login_required, current_user
 
+from douban import blueprint_douban 
+
 import os
 import sys
 import click
-from helpers.echarts import hbar_option
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.root_path, 'movie.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.config['SECRET_KEY'] = 'dev' # 等同于 app.secret_key = 'dev'
-# app.app_context().push()
+# Register the Blueprint with the main app
+app.register_blueprint(blueprint_douban, url_prefix='/douban')# app.app_context().push()
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -440,31 +443,3 @@ def search_actor():
     print(actors_searched)
     user = User.query.first() # 读取用户记录
     return render_template('search_actor.html', keyword=keyword,actors_searched=actors_searched,user = user)
-
-@app.route('/douban', methods=['GET'])
-def douban():
-    movies = pd.read_sql_table('douban_movies', con=db.engine)
-    movies['link'] = movies.apply(lambda x: f"""<a href="{x['douban_url']}">{x['douban_rate']}</a>""", axis=1)
-    movies['release_year'] = movies.release_year.fillna(0).astype(np.int64)
-    movies['short'] = movies.description.str.replace(r'\n| |\u3000', '', regex=True)
-    movies['short'] = movies['short'].apply(lambda x: x if len(x)<155 else x[:155]+'...')
-    movies['country'] = movies.country.str.split('/', expand=True)[0]
-    cols = ['movie_id', 'movie_name', 'release_year', 'movie_type',  'country', 'link', 'short', 'poster']
-    vars = dict(movie_list = movies[cols].values.tolist(), ensure_ascii=True)
-
-    vars['options'] = {}
-    data = movies.loc[
-        movies.country.str.contains('大陆'), ['movie_name', 'douban_rate']
-    ].sort_values('douban_rate', ascending=False)[:10].set_index('movie_name')
-    vars['options']['echart_mainland'] = hbar_option("大陆电影高分榜", data.index.tolist(), data['douban_rate'].tolist())
-    data = movies.loc[
-        movies.country.str.contains('香港|台湾'), ['movie_name', 'douban_rate']
-    ].sort_values('douban_rate', ascending=False)[:10].set_index('movie_name')
-    vars['options']['echart_hk'] = hbar_option("港台电影高分榜", data.index.tolist(), data['douban_rate'].tolist())
-
-    data = movies.loc[
-        ~movies.country.str.contains('大陆|香港|台湾'), ['movie_name', 'douban_rate']
-    ].sort_values('douban_rate', ascending=False)[:10].set_index('movie_name')
-    vars['options']['echart_oversea'] = hbar_option("国外电影高分榜", data.index.tolist(), data['douban_rate'].tolist())
-
-    return render_template('douban.html', vars=vars)
