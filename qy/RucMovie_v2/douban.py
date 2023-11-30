@@ -6,6 +6,8 @@ from helpers.echarts import hbar_option
 import pandas as pd
 import numpy as np
 import os
+import json
+import plotly.express as px
 
 
 # Create a Blueprint instance
@@ -50,7 +52,6 @@ actors = pd.concat([
 axis=1).join(persons.set_index('person_id'))
 actors['max_rate'] = actors.movie_rate.apply(max)
 actors['top_count'] = actors.movie_rate.apply(len)
-actors = actors.sort_values(['max_rate', 'top_count'], ascending=False)
 
 
 @blueprint_douban.route('/')
@@ -87,6 +88,27 @@ def actor_table():
     vars = dict(data = actors[cols].values.tolist(), ensure_ascii=True)
     return render_template('douban/actor_list.html', vars=vars)
 
+@blueprint_douban.route('/actormap')
+def actor_map():
+    with open('helpers/china.json', encoding='utf8') as f:
+        json_data = json.load(f)['features']
+    provinces = pd.DataFrame.from_dict(
+        data={p['properties']['name']:p['properties']['center'] for p in json_data if p['properties']['name']!=''},
+        orient='index', columns=['lon', 'lat']
+    )
+    provinces.index = provinces.index.str.replace('市|省|自治区|壮族|回族|维吾尔', '', regex=True)
+    provinces =  provinces.join(actors.loc[actors.birth_place.str.contains('中国'), 'birth_place'].str.split(',', expand=True)[1].value_counts())
+    provinces = provinces.loc[provinces['count'].notna()]
+
+    provinces['text'] = provinces.apply(lambda x: f"{x.name}: {x['count']:0.0f}", axis=1)
+
+    px.set_mapbox_access_token('pk.eyJ1Ijoia2FyaWJ1bnlhaHVhIiwiYSI6ImNsYW0xcGp4dDBhdW8zcG1pcHcxdDR1OGsifQ.I3r8tCO7g08pzM1kFYUwfg')
+    provinces = provinces.reset_index()
+    df = px.data.carshare()
+    fig = px.scatter_mapbox(provinces, lat="lat", lon="lon", size="count", hover_name='index', size_max=30, zoom=4)
+    fig.update_layout(margin = dict(l = 0, r = 0, t = 0, b = 0), height=800)
+    div_map = fig.to_html(full_html=False)
+    return render_template('douban/actor_map.html', div_map=div_map)
 
 
 

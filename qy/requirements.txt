@@ -9,3 +9,4 @@ click
 markupsafe
 pandas
 numpy
+plotly
