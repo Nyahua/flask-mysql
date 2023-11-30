@@ -16,3 +16,7 @@ flask run
 - add '豆瓣' to navbar in tempalte `base.html`
 - add new route to `/douban` directories
 
+## refer to
+- [china GeoJson](https://github.com/yezongyang/china-geojson)
+- [https://plotly.com/python/scattermapbox/](https://plotly.com/python/scattermapbox/)
+
